@@ -4,10 +4,14 @@ import userRoutes from './routes/userRoutes.js';
 import {config} from './config/config.js';
 import connectDB from './config/db.config.js';
 import cookieParser from 'cookie-parser';
+import {uploadcloyd }from './config/cloudnary.js';
+import {uploads} from './middlewares/multerMiddleware.js';
 import cors from 'cors';
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+console.log("cors",process.env.CORS);
 app.use(cors(
   {
     origin: process.env.CORS,
@@ -16,8 +20,10 @@ app.use(cors(
 ));
 app.use('/api/auth', authRoutes);
 app.use('/api/user',userRoutes);
-
+app.use('/upload',uploads.single('file'),uploadcloyd);
 const startServer = async () => {
+  console.log("mongo url",process.env.MONGO_URI);
+  console.log("jwt secret",process.env.JWT_SECRET);
     try {
       await connectDB(); 
       app.listen(config.port, () => {

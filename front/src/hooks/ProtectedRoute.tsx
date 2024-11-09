@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store'; // Adjust the path as needed
 import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import { PersistGate } from 'redux-persist/integration/react';
+
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -11,8 +11,8 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   // Get authentication status from persisted state
-  const authenticated = useSelector((state: RootState) => state.isAuthenticated);
-  const user=useSelector((state: RootState) => state.user);
+  const authenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const user=useSelector((state: RootState) => state.auth.user);
   
   // Optional: check for the loading status of persisted state (if needed)
   const rehydrated = useSelector((state: RootState) => state._persist?.rehydrated);

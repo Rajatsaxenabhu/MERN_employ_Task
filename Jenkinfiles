@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+    stages {
+        stage("code"){
+            step {
+                echo "starting the git clone"
+                git url: "https://github.com/Rajatsaxenabhu/MERN_employ_Task", branch:"main"
+                echo "code clone successful"
+                
+            }
+        }
+        stage("built"){}
+        stage("test"){}
+        stage("deploy"){}
+        
+    }
+}

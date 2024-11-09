@@ -1,6 +1,3 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-
 const Header = () => {
   return (
     <header className="bg-fuchsia-600 text-white shadow-md py-4 w-full min-h-screen flex items-center justify-center">

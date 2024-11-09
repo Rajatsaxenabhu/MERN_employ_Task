@@ -1,9 +1,10 @@
-// EmployeeList.js
 import React, { useEffect, useState } from 'react';
 import userapi from '../../api/userapi';
 import SearchBox from './searchbox';
 import EmployeeTable from './employeeTable';
 import EmployeeModal from './employeeModal';
+import { ToastContainer, toast } from 'react-toastify';  // Import toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import toast styles
 
 const EmployeeList = () => {
     const [employees, setEmployees] = useState([]);
@@ -31,6 +32,7 @@ const EmployeeList = () => {
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
+                toast.error(`Error fetching employees: ${err.message}`);
             }
         };
 
@@ -47,9 +49,11 @@ const EmployeeList = () => {
             if (response.status !== 200) {
                 throw new Error('Failed to delete employee');
             }
+            toast.success("Employee deleted successfully!");
         } catch (err) {
             setEmployees(previousEmployees); // Rollback in case of error
             setError(err.message);
+            toast.error(`Error deleting employee: ${err.message}`);
         }
     };
 
@@ -63,17 +67,19 @@ const EmployeeList = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         const updatedEmployee = { ...editingEmployee };
-        
+
         try {
             const response = await userapi.put(`/employees/${editingEmployee._id}`, updatedEmployee);
             if (response.status === 200) {
                 setEmployees(employees.map(emp => emp._id === editingEmployee._id ? updatedEmployee : emp));
                 setIsModalOpen(false);
+                toast.success("Employee updated successfully!");  // Success toast
             } else {
                 throw new Error('Failed to update employee');
             }
         } catch (err) {
             setError(err.message);
+            toast.error(`Error updating employee: ${err.message}`);  // Error toast
         }
     };
 
@@ -120,11 +126,12 @@ const EmployeeList = () => {
     if (error) {
         return <div className="text-center text-red-500 text-xl">Error: {error}</div>;
     }
+
     return (
         <div className="container mx-auto p-4">
             <h2 className="text-3xl font-semibold text-center mb-8">Employee List</h2>
-            <div className='flex justify-end'>
-            <SearchBox searchQuery={searchQuery} onSearchChange={handleSearchChange} />
+            <div className="flex justify-end">
+                <SearchBox searchQuery={searchQuery} onSearchChange={handleSearchChange} />
             </div>
             <EmployeeTable
                 employees={sortedEmployees}
@@ -141,7 +148,11 @@ const EmployeeList = () => {
                     onClose={() => setIsModalOpen(false)}
                 />
             )}
+
+            {/* ToastContainer to show the notifications */}
+            <ToastContainer position="top-center" autoClose={3000} hideProgressBar />
         </div>
     );
 };
+
 export default EmployeeList;

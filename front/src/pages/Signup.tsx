@@ -5,6 +5,7 @@ import { AppDispatch } from '../redux/store';
 import authapi from '../api/authapi';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>('');
@@ -12,7 +13,7 @@ const Signup: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state: RootState) => state.isAuthenticated);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

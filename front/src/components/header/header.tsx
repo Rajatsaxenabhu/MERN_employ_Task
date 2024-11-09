@@ -8,11 +8,11 @@ const Header = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false); // State for dropdown
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown container
-  const name = useSelector((state: RootState) => state.user);
+  const name = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
-  const showEmployeeForm = useSelector((state: RootState) => state.showEmployeeForm);
-  const showEmployeeList = useSelector((state: RootState) => state.showEmployeeList);
-  const showHomepage = useSelector((state: RootState) => state.homepage);
+  const showEmployeeForm = useSelector((state: RootState) => state.auth.showEmployeeForm);
+  const showEmployeeList = useSelector((state: RootState) => state.auth.showEmployeeList);
+  const showHomepage = useSelector((state: RootState) => state.auth.homepage);
   const handleLogout = () => {
     dispatch(logout());
   };

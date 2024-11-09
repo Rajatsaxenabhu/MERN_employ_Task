@@ -17,8 +17,8 @@ const Login: React.FC = () => {
     try {
       const response = await authapi.post('/login', { username, password });
       const { usernames } = response.data;
-      console.log(usernames)
-      dispatch(setCredentials({ user:usernames }));
+
+      dispatch(setCredentials({user:username}));
       navigate('/dashboard');
     } catch (error) {
       setError('Login failed, please try again.');

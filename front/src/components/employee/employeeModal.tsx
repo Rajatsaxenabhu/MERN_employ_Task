@@ -1,4 +1,3 @@
-// EmployeeModal.js
 import React from 'react';
 
 const EmployeeModal = ({ employee, onChange, onSubmit, onClose }) => {

@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store'; // Component for the employee list
 
 const App = () => {  
-  const showEmployeeList=useSelector((state: RootState) => state.showEmployeeList);
-  const showEmployeeForm=useSelector((state: RootState) => state.showEmployeeForm);
-  const showHome=useSelector((state: RootState) => state.homepage);
+  const showEmployeeList=useSelector((state: RootState) => state.auth.showEmployeeList);
+  const showEmployeeForm=useSelector((state: RootState) => state.auth.showEmployeeForm);
+  const showHome=useSelector((state: RootState) => state.auth.homepage);
   return (
     <div className='min-h-screen bg-fuchsia-300'>
       <Header/>
