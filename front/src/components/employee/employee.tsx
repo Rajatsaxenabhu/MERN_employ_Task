@@ -16,7 +16,6 @@ const AddEmployee = () => {
   });
 
   const [image, setImage] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false); // State to handle loading
 
   // Handle change in form inputs
@@ -52,8 +51,6 @@ const AddEmployee = () => {
       });
 
       const uploadedImageUrl = imageResponse.data.url;
-      setImageUrl(uploadedImageUrl);
-
       // Prepare employee data
       const employeeData = {
         ...formData,

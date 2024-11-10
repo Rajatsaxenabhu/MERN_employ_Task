@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../redux/store';
@@ -10,16 +10,9 @@ const Header = () => {
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown container
   const name = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
-  const showEmployeeForm = useSelector((state: RootState) => state.auth.showEmployeeForm);
-  const showEmployeeList = useSelector((state: RootState) => state.auth.showEmployeeList);
-  const showHomepage = useSelector((state: RootState) => state.auth.homepage);
   const handleLogout = () => {
     dispatch(logout());
   };
-  const handelclick = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
-
   return (
     <header className="bg-blue-600 text-white shadow-md h-20">
       <div className="container mx-auto flex justify-between items-center p-4">

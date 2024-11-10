@@ -6,26 +6,45 @@ import authapi from '../api/authapi';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import { ToastContainer, toast } from 'react-toastify';  // Import toastify
+import 'react-toastify/dist/ReactToastify.css';  
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null); // Reset the error state
+  
+    // Basic validation
+    if (username.length < 4) {
+      toast.error('Username must be at least 4 characters long.');
+      return;
+    }
+  
+    if (password.length < 8) {
+      toast.error('Password must be at least 8 characters long.');
+      return;
+    }  
+    setIsLoading(true); //
     try {
-      const response = await authapi.post('/signup', { username, password });
-      const user = username;
-      dispatch(setCredentials({ user }));
+      await authapi.post('/signup', { username, password });
+      dispatch(setCredentials({ user: username }));
       navigate('/dashboard');
-    } catch (error) {
-      setError('Signup failed, please try again.');
-      console.error('Signup failed', error);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const axiosError = err as AxiosError;
+        toast.error(axiosError.response?.data?.message || 'Signup failed, please try again.');
+      } else {
+        toast.error('An unknown error occurred. Please try again later.');
+      }
+      console.error('Signup failed', err);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
   useEffect(() => {
@@ -38,7 +57,7 @@ const Signup: React.FC = () => {
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Sign Up</h2>
-        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+
         <form onSubmit={handleSignup} className="space-y-6">
           <div>
             <input
@@ -54,6 +73,7 @@ const Signup: React.FC = () => {
               type="password"
               placeholder="Password"
               value={password}
+
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
@@ -74,6 +94,7 @@ const Signup: React.FC = () => {
           </a>
         </p>
       </div>
+      <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
     </div>
   );
 };

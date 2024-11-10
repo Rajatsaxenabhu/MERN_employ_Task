@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import userapi from '../api/userapi';
 interface user {
     name: string;
@@ -25,7 +25,7 @@ const UserList = () => {
         }
         const data = await response.json();
         setUsers(data); // Set users data
-      } catch (err) {
+      } catch (err: any) {
         setError(err.message); // Set error message if fetch fails
       } finally {
         setLoading(false); // Set loading to false when data fetching is complete

@@ -23,7 +23,6 @@ app.use('/api/user',userRoutes);
 app.use('/upload',uploads.single('file'),uploadcloyd);
 const startServer = async () => {
   console.log("mongo url",process.env.MONGO_URI);
-  console.log("jwt secret",process.env.JWT_SECRET);
     try {
       await connectDB(); 
       app.listen(config.port, () => {
