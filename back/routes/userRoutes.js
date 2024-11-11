@@ -15,7 +15,7 @@ router.get('/employees', protect,getAllEmployees);
 
 router.get('/employees/:id',protect, getEmployeeById);
 
-router.put('/employees/:id',protect, updateEmployee);
+router.post('/employees/:id',protect, updateEmployee);
 
 router.delete('/employees/:id',protect, deleteEmployee);
 

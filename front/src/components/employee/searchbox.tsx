@@ -1,4 +1,8 @@
-const SearchBox = ({ searchQuery, onSearchChange }) => {
+interface SearchBoxProps {
+    searchQuery: string;
+    onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  }
+  const SearchBox = ({ searchQuery, onSearchChange }: SearchBoxProps) => {
     return (
         <div className="mb-4">
             <input

@@ -6,6 +6,7 @@ interface AuthState {
   showEmployeeForm: boolean;
   showEmployeeList: boolean;
   homepage: boolean;
+  loading:boolean;
 }
 
 const initialState: AuthState = {
@@ -13,7 +14,8 @@ const initialState: AuthState = {
   isAuthenticated: false,
   showEmployeeForm: false,
   showEmployeeList: false,
-  homepage: true
+  homepage: true,
+  loading:true
 };
 
 const authSlice = createSlice({
@@ -44,9 +46,12 @@ const authSlice = createSlice({
       state.homepage = true
       state.showEmployeeForm = false;
       state.showEmployeeList = false;
-    }  
+    },
+    toggleLoading: (state, action: PayloadAction<{ value: boolean; }>) => {
+      state.loading = action.payload.value;
+    },
   },
 });
 
-export const { setCredentials, logout,toggleEmployeeForm, toggleEmployeeList,toggleHomepage } = authSlice.actions;
+export const { setCredentials, logout,toggleEmployeeForm, toggleEmployeeList,toggleHomepage,toggleLoading } = authSlice.actions;
 export default authSlice.reducer;

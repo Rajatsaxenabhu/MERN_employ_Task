@@ -7,7 +7,6 @@ const protect = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(jwt.verify(token, process.env.JWT_SECRET));
     req.user = decoded;  
     return next();
   } catch (error) {
@@ -17,7 +16,7 @@ const protect = async (req, res, next) => {
         if (!decodedExpired) {
           return res.status(401).json({ message: 'Token is expired and invalid' });
         }
-        console.log(decodedExpired);
+      
 
         // Generate a new access token
         const newAccessToken = jwt.sign(

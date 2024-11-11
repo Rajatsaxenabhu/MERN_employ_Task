@@ -8,22 +8,23 @@ import {uploadcloyd }from './config/cloudnary.js';
 import {uploads} from './middlewares/multerMiddleware.js';
 import cors from 'cors';
 const app = express();
-app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-console.log("cors",process.env.CORS);
+
 app.use(cors(
   {
-    origin: process.env.CORS,
+    origin: 'http://localhost:5173',
     credentials: true
   }
 ));
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/user',userRoutes);
 app.use('/upload',uploads.single('file'),uploadcloyd);
 const startServer = async () => {
-  console.log("mongo url",process.env.MONGO_URI);
     try {
+      
       await connectDB(); 
       app.listen(config.port, () => {
         console.log(`Server running on port ${config.port}`);

@@ -10,14 +10,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  // Get authentication status from persisted state
   const authenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const user=useSelector((state: RootState) => state.auth.user);
-  
-  // Optional: check for the loading status of persisted state (if needed)
   const rehydrated = useSelector((state: RootState) => state._persist?.rehydrated);
-
-  // Wait for the state to rehydrate if redux-persist is still loading
   if (rehydrated === false) {
     return <div>Loading...</div>; // Show a loading state until rehydration is complete
   }

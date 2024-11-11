@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import userapi from '../api/userapi';
+import { RootState } from '../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleLoading } from '../redux/slice/authSlice';
 interface user {
     name: string;
     email: string;
@@ -11,24 +14,31 @@ interface user {
 }
 
 const UserList = () => {
+  const dispatch = useDispatch();
+  
   const [users, setUsers] = useState([]); // Store the users data
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error
 
   useEffect(() => {
+
     const fetchData = async () => {
       try {
-        // Fetch data from the backend API
+        dispatch(toggleLoading({value:true}));
+        setLoading(true)
         const response = await userapi.get('/employees'); // Change this to your actual backend API
-        if (!response.ok) {
+        if (response.status !== 200) {
           throw new Error('Data fetch failed');
         }
-        const data = await response.json();
+        const data = await response.data;
+        console.log(data)
         setUsers(data); // Set users data
+        dispatch(toggleLoading({value:false}));
       } catch (err: any) {
         setError(err.message); // Set error message if fetch fails
       } finally {
-        setLoading(false); // Set loading to false when data fetching is complete
+        setLoading(false); 
+        dispatch(toggleLoading({value:false}));// Set loading to false when data fetching is complete
       }
     };
 

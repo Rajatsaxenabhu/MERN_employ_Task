@@ -4,7 +4,7 @@ import Emp from '../models/employee.js'; // Import the Employee model
 export const addEmployee = async (req, res) => {
   try {
     const { name, email, mobile, designation, gender, course, image } = req.body;
-    const existingEmployee = await Emp.findOne({ $or: [{ email }, { name }] });
+    const existingEmployee = await Emp.findOne({ $or: [{ email }, { mobile }] });
     if (existingEmployee) {
       return res.status(400).json({ message: 'Employee with this name or email already exists' });
     }
@@ -31,7 +31,7 @@ export const getAllEmployees = async (req, res) => {
   try {
     console.log("input")
     const employees = await Emp.find();
-    return res.status(200).json({ employees });
+    return res.status(200).json({employees });
   } catch (error) {
     return res.status(500).json({ message: 'Failed to fetch employees', error: error.message });
   }
@@ -52,23 +52,28 @@ export const getEmployeeById = async (req, res) => {
 
 // Update employee data
 export const updateEmployee = async (req, res) => {
+  
   try {
-    const { name, email, mobile, designation, gender, course, image } = req.body;
+    const {name, designation, gender, course, image, email, mobile} = req.body;
+    console.log(req.body);
+    const duplicateEmail = await Emp.findOne({ email });
+    if (duplicateEmail) {
+      console.log("enter email")
+      return res.status(301).json({ message: 'Email is already taken by another employee' });
+    }
     const updatedEmployee = await Emp.findByIdAndUpdate(
       req.params.id,
-      { name, email, mobile, designation, gender, course, image },
-      { new: true } // to return the updated document
+      { email},
+      { new: true }
     );
-
-    if (!updatedEmployee) {
-      return res.status(404).json({ message: 'Employee not found' });
-    }
-
     return res.status(200).json({ message: 'Employee updated successfully', employee: updatedEmployee });
+
   } catch (error) {
+    console.error('Error updating employee:', error);  // Log the error for debugging
     return res.status(500).json({ message: 'Failed to update employee', error: error.message });
   }
 };
+
 
 // Delete employee data
 export const deleteEmployee = async (req, res) => {

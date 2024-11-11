@@ -8,19 +8,19 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { ToastContainer, toast } from 'react-toastify';  // Import toastify
 import 'react-toastify/dist/ReactToastify.css';  
-
+import axios from 'axios';
+import { AxiosError } from 'axios';
 const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Basic validation
+    
     if (username.length < 4) {
       toast.error('Username must be at least 4 characters long.');
       return;
@@ -30,7 +30,7 @@ const Signup: React.FC = () => {
       toast.error('Password must be at least 8 characters long.');
       return;
     }  
-    setIsLoading(true); //
+   
     try {
       await authapi.post('/signup', { username, password });
       dispatch(setCredentials({ user: username }));
@@ -38,13 +38,12 @@ const Signup: React.FC = () => {
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
-        toast.error(axiosError.response?.data?.message || 'Signup failed, please try again.');
-      } else {
+        toast.error((axiosError.response?.data as any).message || 'Signup failed, please try again.');
         toast.error('An unknown error occurred. Please try again later.');
       }
       console.error('Signup failed', err);
     } finally {
-      setIsLoading(false); // End loading
+      
     }
   };
   useEffect(() => {
