@@ -24,7 +24,6 @@ interface SortConfig {
 
 const EmployeeList: React.FC = () => {
   const [employees, setEmployees] = useState<Employees[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingEmployee, setEditingEmployee] = useState<Employees| null>(null);
   const [originalEmployee, setOriginalEmployee] = useState<Employees | null>(null);
@@ -42,8 +41,6 @@ const EmployeeList: React.FC = () => {
         setEmployees(data.employees);
 
       } catch (err: any) {
-        setError(err.message);
-
         toast.error(`Error fetching employees: ${err.message}`);
       }
     };
@@ -85,7 +82,11 @@ const EmployeeList: React.FC = () => {
     Object.keys(editingEmployee).forEach((key) => {
       const keyTyped = key as keyof Employees;
       if (editingEmployee[keyTyped] !== originalEmployee[keyTyped]) {
-        updatedFields[keyTyped] = editingEmployee[keyTyped];
+        if (keyTyped === 'gender') {
+          updatedFields[keyTyped] = editingEmployee[keyTyped] as 'Male' | 'Female' | 'Other';
+        } else {
+          updatedFields[keyTyped] = editingEmployee[keyTyped];
+        }
       }
     });
   

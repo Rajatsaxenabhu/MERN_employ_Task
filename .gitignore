@@ -63,3 +63,4 @@ package-lock.json
 # Jest snapshot tests
 *.snap
 *.d
+do.sh 

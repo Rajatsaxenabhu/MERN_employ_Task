@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import userapi from '../api/userapi';
-import { RootState } from '../redux/store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleLoading } from '../redux/slice/authSlice';
 interface user {
     name: string;
