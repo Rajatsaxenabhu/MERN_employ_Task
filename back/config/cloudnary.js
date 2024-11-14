@@ -8,12 +8,10 @@ cloudinary.config({
     secure: true
 });
 export const uploadcloyd = async (localpath, res) => {
-    console.log(localpath.file.path)
-    localpath=localpath.file.path
+    localpath=localpath
     try {
         console.log(fs.existsSync(localpath));
         if (!localpath) return null;
-        console.log("enter in the gave", localpath);
         const resp = await cloudinary.uploader.upload(localpath, {
             resource_type: "auto"
         });

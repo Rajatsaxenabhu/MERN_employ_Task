@@ -16,7 +16,6 @@ const Signup: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
   

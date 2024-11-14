@@ -1,18 +1,16 @@
-# Step 1: Build the application
-FROM node:18-alpine
+    FROM node:18 as build
+    WORKDIR /app
+    COPY package.json package-lock.json ./
+    RUN npm install
+    COPY . .
+    RUN npm run build
 
-# Set the working directory
-WORKDIR /app
+    FROM nginx:alpine
+    RUN rm -rf /usr/share/nginx/html/*
+    COPY --from=build /app/dist /usr/share/nginx/html
+    RUN rm /etc/nginx/conf.d/default.conf
+    COPY nginx.conf /etc/nginx/conf.d
 
-# Copy package.json and package-lock.json (or yarn.lock if you're using yarn)
-COPY package*.json ./
+    EXPOSE 80
 
-# Install the dependencies (including dev dependencies for build)
-RUN npm install
-
-# Copy the rest of the application files
-COPY . .
-EXPOSE 5173
-
-# Build the Vite project
-CMD [ "npm", "run", "dev" ]
+    CMD ["nginx", "-g", "daemon off;"]

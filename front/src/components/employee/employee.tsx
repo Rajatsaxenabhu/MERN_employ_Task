@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import userapi from '../../api/userapi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-
+import uploadapi from '../../api/uploadapi';
 const AddEmployee = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -19,11 +18,6 @@ const AddEmployee = () => {
   const [loading, setLoading] = useState(false); // State to handle loading
 
   // Handle change in form inputs
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setImage(file);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -35,30 +29,42 @@ const AddEmployee = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!image) {
       toast.error("Image not found!");
       return;
     }
+  
     setLoading(true); // Show the loading spinner
-
+  
     try {
-      // Upload image
+      if (!image) {
+        toast.error("Image not found!");
+        return;        
+      }
       const formDataImage = new FormData();
       formDataImage.append('file', image);
-      const imageResponse = await axios.post('http://localhost:3000/upload', formDataImage, {
+      console.log(formDataImage.get('file'));
+  
+      const imageResponse = await uploadapi.post('/upload',formDataImage, {
         withCredentials: true
-      });
-
+      });   
+      console.log(imageResponse)
+  
+      // Extract the URL from the response
       const uploadedImageUrl = imageResponse.data.url;
-      // Prepare employee data
+  
+      // Prepare employee data, ensuring we attach the uploaded image URL
       const employeeData = {
         ...formData,
         image: uploadedImageUrl
       };
+  
+      // Send employee data to the server
       await userapi.post('/employees', employeeData);
+  
       toast.success("Employee added successfully");
-
+  
       // Reset form fields after submission
       setFormData({
         name: '',
@@ -67,12 +73,14 @@ const AddEmployee = () => {
         designation: '',
         gender: 'Male',
         course: '',
-        image: ''
+        image: ''  // Ensure the image field is reset
       });
-      setImage(null);
-
+      setImage(null); // Reset image
+  
     } catch (error) {
-      toast.error('Error adding employee. Please try again.');
+      // Provide specific error feedback for debugging
+      const errorMessage = 'Error adding employee. Please try again.';
+      toast.error(errorMessage);
       console.error('Error adding employee:', error);
     } finally {
       setLoading(false); // Hide the loading spinner after the process is complete
@@ -183,7 +191,7 @@ const AddEmployee = () => {
             <input
               type="file"
               name="image"
-              onChange={handleFileChange}
+              onChange={(e)=>setImage(e.target.files ? e.target.files[0] : null)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
