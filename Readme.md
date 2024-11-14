@@ -40,28 +40,28 @@ Make sure you have the following installed on your machine:
 3. Jenkins Setup
     Install Jenkins: Follow the installation instructions for Jenkins if you don’t have it set up already.
 
-    Create a new Jenkins Job:
+    * Create a new Jenkins Job:
 
-    Create a new "Pipeline" job in Jenkins.
+    * Create a new "Pipeline" job in Jenkins.
 
-    In the Pipeline section, add the following pipeline script:
+    * In the Pipeline section, add the following pipeline script:
 
 4. Kubernetes Deployment
-    To deploy the application on Kubernetes:
+    * To deploy the application on Kubernetes:
 
-    Set up Kubernetes Cluster on AWS and make sure your cluster is up and running.
+    * Set up Kubernetes Cluster on AWS and make sure your cluster is up and running.
 
-    Kubernetes Config Files:
+    * Kubernetes Config Files:
     
-    I have the kubernetes manifist file in my K8s folder
+    * I have the kubernetes manifist file in my K8s folder
 
     Apply the configration :
 
-    kubectl apply -f env.yml
-    kubectl apply -f database.yml
-    kubectl apply -f back_end.yml
-    kubectl apply -f front_end.yml
-    kubectl apply -f ingress.yml
+    - kubectl apply -f env.yml
+    - kubectl apply -f database.yml
+    - kubectl apply -f back_end.yml
+    - kubectl apply -f front_end.yml
+    - kubectl apply -f ingress.yml
 
 5. Set Up a Route 53 DNS record to map your custom hostname to your Kubernetes  Ingress.
 
@@ -71,6 +71,6 @@ Make sure you have the following installed on your machine:
 # UI Screenshots
 
 ![This is the main page where the authentication is done](images/Signup%20&%20Login.png)
-![This is the home Dashbaord](images/Home_Dashboard.png)
-![Here we can add and update the details of Employee](images/Add_new_and_update_Form.png)
-![Here is the list of Employee](images/Employee_List.png)
+![This is the home Dashbaord](images/Home%20Dashboard.png)
+![Here we can add and update the details of Employee](images/Add%20new%20and%20update%20Form.png)
+![Here is the list of Employee](images/Employee%20List.png)
