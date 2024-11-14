@@ -70,7 +70,7 @@ Make sure you have the following installed on your machine:
 # Screenshots
 # UI Screenshots
 
-![This is the main page where the authentication is done](MERN_employ_Task/images/Signup_&_Login.png)
+![This is the main page where the authentication is done](images/Signup%20&%20Login.png)
 ![This is the home Dashbaord](images/Home_Dashboard.png)
 ![Here we can add and update the details of Employee](images/Add_new_and_update_Form.png)
 ![Here is the list of Employee](images/Employee_List.png)
